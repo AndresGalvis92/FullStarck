@@ -4,7 +4,7 @@ import { getProductos, addProducto, updateProducto, deleteProducto } from '../se
 const ProductosTable = () => {
     const [productos, setProductos] = useState([]);
     const [producto, setProducto] = useState({ nombre: '', codigo: '', inventario: '', marca: '', valor: '' });
-    const [productoIdParaEditar, setProductoIdParaEditar] = useState(null);
+    const [productoIdParaEditar, setProductoIdParaEditar] = useState(null); // Estado para saber si estamos editando
 
     useEffect(() => {
         fetchProductos();
@@ -17,13 +17,15 @@ const ProductosTable = () => {
 
     const handleSave = async () => {
         if (productoIdParaEditar) {
+            // Actualizar producto
             await updateProducto(productoIdParaEditar, producto);
-            setProductoIdParaEditar(null);
+            setProductoIdParaEditar(null); // Resetear estado de edición
         } else {
+            // Agregar producto
             await addProducto(producto);
         }
         fetchProductos();
-        setProducto({ nombre: '', codigo: '', inventario: '', marca: '', valor: '' });
+        setProducto({ nombre: '', codigo: '', inventario: '', marca: '', valor: '' }); // Limpia el formulario
     };
 
     const handleDelete = async (id) => {
@@ -32,20 +34,19 @@ const ProductosTable = () => {
     };
 
     const cargarProductoParaEditar = (prod) => {
-        setProductoIdParaEditar(prod.id);
+        setProductoIdParaEditar(prod.id); // Configura el producto a editar
         setProducto({
             nombre: prod.nombre,
             codigo: prod.codigo,
             inventario: prod.inventario,
             marca: prod.marca,
-            valor: prod.valor
+            valor: prod.valor,
         });
     };
 
     return (
-        <div className="container my-4">
-            <h1 className="text-center mb-4">Productos</h1>
-
+        <div className="container mt-5">
+            <h1>Productos</h1>
             <table className="table table-striped">
                 <thead className="thead-dark">
                     <tr>
@@ -68,10 +69,16 @@ const ProductosTable = () => {
                             <td>{prod.marca}</td>
                             <td>{prod.valor}</td>
                             <td>
-                                <button className="btn btn-primary btn-sm me-2" onClick={() => cargarProductoParaEditar(prod)}>
+                                <button
+                                    className="btn btn-primary btn-sm me-2"
+                                    onClick={() => cargarProductoParaEditar(prod)}
+                                >
                                     Editar
                                 </button>
-                                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(prod.id)}>
+                                <button
+                                    className="btn btn-danger btn-sm"
+                                    onClick={() => handleDelete(prod.id)}
+                                >
                                     Eliminar
                                 </button>
                             </td>
@@ -80,9 +87,11 @@ const ProductosTable = () => {
                 </tbody>
             </table>
 
-            {/* Formulario para añadir/editar producto */}
+            {/* Formulario para añadir o editar producto */}
             <div className="card p-4">
-                <h5 className="card-title">{productoIdParaEditar ? 'Actualizar Producto' : 'Añadir Producto'}</h5>
+                <h5 className="card-title">
+                    {productoIdParaEditar ? 'Actualizar Producto' : 'Añadir Producto'}
+                </h5>
                 <div className="mb-3">
                     <input
                         type="text"
