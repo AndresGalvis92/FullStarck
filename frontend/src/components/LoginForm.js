@@ -12,7 +12,7 @@ const LoginForm = () => {
         try {
             const res = await axios.post('http://localhost:5000/login', form);
             localStorage.setItem('token', res.data.token); // Guarda el token
-            navigate('/productos'); // Redirige a la página de productos después del login
+            navigate('/Tienda'); // Redirige a la página de tienda después del login
         } catch (err) {
             setMessage(err.response?.data?.message || 'Error al iniciar sesión');
         }
