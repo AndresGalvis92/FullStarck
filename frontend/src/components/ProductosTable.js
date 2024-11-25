@@ -41,6 +41,7 @@ const ProductosTable = () => {
             inventario: prod.inventario,
             marca: prod.marca,
             valor: prod.valor,
+            estado: prod.estado,
         });
     };
 
