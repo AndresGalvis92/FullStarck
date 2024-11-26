@@ -147,3 +147,4 @@ const ProductosTable = () => {
 };
 
 export default ProductosTable;
+
