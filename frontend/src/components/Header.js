@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../css/Tienda.css'; // Ruta correcta para los estilos
+import carritoIcono from '../assets/images/carritoc.png'; // Importa la imagen
 
-const Header = ( ) => {
-    
+const Header = () => {
     return (
         <>
             {/* Navbar Superior */}
@@ -26,17 +26,22 @@ const Header = ( ) => {
                             <li className="nav-item">
                                 <Link className="nav-link active" to="/productos">Productos</Link>
                             </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/carrito">Carrito</Link>
-                            </li>
                         </ul>
                         <form className="d-flex">
-                            <button type="button" className="btn btn-secondary position-relative me-5">
-                                Inbox
+                            {/* Botón Inbox con la imagen y de color azul */}
+                            <Link to="/carrito" className="btn btn-primary position-relative me-5"> {/* Cambiado a btn-primary para color azul */}
+                                {/* Muestra la imagen en lugar del texto */}
+                                <img
+                                    src={carritoIcono}
+                                    alt="Carrito"
+                                    style={{ width: '24px', height: '24px', marginRight: '10px' }}
+                                />
                                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger m-1">
-                                    {/* {counterCarrito} */1}
+                                    {/* Contador de artículos en el carrito */}
+                                    {1}
                                 </span>
-                            </button>
+                            </Link>
+
                             <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" />
                             <button className="btn btn-outline-light" type="submit">Buscar</button>
                         </form>
@@ -45,5 +50,6 @@ const Header = ( ) => {
             </nav>
         </>
     );
-}
+};
+
 export default Header;
