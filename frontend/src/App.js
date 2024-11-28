@@ -6,7 +6,8 @@ import RegisterForm from './components/RegisterForm';
 import Productos from './components/Productos';
 import Carrito from './components/Carrito';
 import Tienda from './components/Tienda';
-import NavbarBarra from './components/NavbarBarra';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 
 import './css/styles.css';
@@ -17,7 +18,7 @@ function App() {
     return (
         <Router>
             <div className="App">
-                <NavbarBarra/>
+                <Header/>
                 <Routes>
                     <Route path="/" element={<LoginForm setIsAuthenticated={setIsAuthenticated} />} />
                     <Route path="/login" element={<LoginForm setIsAuthenticated={setIsAuthenticated} />} />
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/tienda" element={<Tienda />} />
                     <Route path="/carrito" element={<Carrito />} />
                 </Routes>
+                <Footer/>
             </div>
         </Router>
     );
