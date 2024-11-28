@@ -1,14 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useProductos from '../hooks/useProductos';
 import '../css/Tienda.css'; // Ruta correcta para los estilos
 import bannerImage from '../assets/images/banner.png'; // Importar la imagen del banner
-
+// import useCompra from '../hooks/useCompra';
 
 
 const Tienda = () => {
-
+    
     const {productos} = useProductos();
+    // const{ carrito, agregarAlCarrito, calcularTotal, eliminarDelCarrito} =useCompra();
+
     
     return (
         <div>
@@ -34,12 +36,13 @@ const Tienda = () => {
                 <div className="row">
                     {productos.map((prod) => ( 
                         <div className="col-md-4">
+                            {/* {key=prod.id} */}
                             <div className="card">
                                 <img src="https://via.placeholder.com/300" className="card-img-top" alt="Producto 1" />
                                 <div className="card-body">
                                     <h5 className="card-title">{prod.nombre}</h5>
-                                    <p className="card-text">{prod.valor}</p>
-                                    <Link to="/carrito" className="btn btn-primary">Añadir al Carrito</Link>
+                                    <p className="card-text">{prod.valor}</p>   
+                                    <button className='btn btn-success' onClick={() => agregarAlCarrito(prod)} > Añadir al carrito </button>
                                 </div>
                             </div>
                         </div>
