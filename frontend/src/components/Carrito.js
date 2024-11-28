@@ -1,8 +1,8 @@
+// Carrito.js
 import React from 'react';
 
 const Carrito = ({ cartItems, removeFromCart, clearCart }) => {
-  // Calcula el total de productos
-  const totalProductos = cartItems.reduce((acc, prod) => acc + (prod.cantidad || 1), 0);
+  const totalProductos = cartItems.reduce((acc, prod) => acc + prod.cantidad, 0);
 
   return (
     <div className="container mt-5">
@@ -44,7 +44,7 @@ const Carrito = ({ cartItems, removeFromCart, clearCart }) => {
                 <td>
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => removeFromCart(prod.id)} // Elimina solo el producto seleccionado
+                    onClick={() => removeFromCart(prod.id)} // Eliminar el producto seleccionado
                   >
                     Eliminar
                   </button>

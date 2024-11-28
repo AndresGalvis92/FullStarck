@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useProductos from '../hooks/useProductos';
 import '../css/Tienda.css'; // Ruta correcta para los estilos
@@ -6,6 +6,17 @@ import bannerImage from '../assets/images/banner.png'; // Importar la imagen del
 
 const Tienda = ({ addToCart }) => {
     const { productos } = useProductos();
+
+    // Estado local para manejar las cantidades seleccionadas para cada producto
+    const [cantidades, setCantidades] = useState({});
+
+    // Función para manejar el cambio de cantidad
+    const actualizarCantidad = (id, cambio) => {
+        setCantidades((prev) => ({
+            ...prev,
+            [id]: Math.max((prev[id] || 1) + cambio, 1), // Asegura que la cantidad no sea menor a 1
+        }));
+    };
 
     return (
         <div>
@@ -41,10 +52,32 @@ const Tienda = ({ addToCart }) => {
                                 />
                                 <div className="card-body">
                                     <h5 className="card-title">{prod.nombre}</h5>
-                                    <p className="card-text">{prod.valor}</p>
+                                    <p className="card-text">Precio: ${prod.valor}</p>
+
+                                    {/* Controles de cantidad */}
+                                    <div className="d-flex align-items-center mb-3">
+                                        <button
+                                            className="btn btn-outline-secondary btn-sm me-2"
+                                            onClick={() => actualizarCantidad(prod.id, -1)}
+                                        >
+                                            -
+                                        </button>
+                                        <span>{cantidades[prod.id] || 1}</span>
+                                        <button
+                                            className="btn btn-outline-secondary btn-sm ms-2"
+                                            onClick={() => actualizarCantidad(prod.id, 1)}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+
+                                    {/* Botón Añadir al carrito */}
                                     <button
                                         className="btn btn-success"
-                                        onClick={() => addToCart(prod)} // Usar addToCart correctamente
+                                        onClick={() => {
+                                            const cantidadSeleccionada = cantidades[prod.id] || 1;
+                                            addToCart(prod, cantidadSeleccionada); // Llamada a la función con producto y cantidad
+                                        }}
                                     >
                                         Añadir al carrito
                                     </button>

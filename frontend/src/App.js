@@ -8,7 +8,6 @@ import Carrito from './components/Carrito';
 import Tienda from './components/Tienda';
 import Header from './components/Header';
 import Footer from './components/Footer';
-
 import './css/styles.css';
 
 function App() {
@@ -16,8 +15,21 @@ function App() {
     const [cartItems, setCartItems] = useState([]); // Estado del carrito
 
     // Función para añadir productos al carrito
-    const addToCart = (product) => {
-        setCartItems((prevCartItems) => [...prevCartItems, product]);
+    const addToCart = (product, cantidad) => {
+        setCartItems((prevCartItems) => {
+            const existingProduct = prevCartItems.find((item) => item.id === product.id);
+            if (existingProduct) {
+                // Si el producto ya está en el carrito, solo actualiza la cantidad
+                return prevCartItems.map((item) =>
+                    item.id === product.id
+                        ? { ...item, cantidad: item.cantidad + cantidad }
+                        : item
+                );
+            } else {
+                // Si no está en el carrito, añádelo
+                return [...prevCartItems, { ...product, cantidad }];
+            }
+        });
     };
 
     // Función para eliminar productos del carrito
@@ -37,23 +49,11 @@ function App() {
             <div className="App">
                 <Header />
                 <Routes>
-                    <Route
-                        path="/"
-                        element={<LoginForm setIsAuthenticated={setIsAuthenticated} />}
-                    />
-                    <Route
-                        path="/login"
-                        element={<LoginForm setIsAuthenticated={setIsAuthenticated} />}
-                    />
-                    <Route
-                        path="/productos"
-                        element={<Productos addToCart={addToCart} />}
-                    />
+                    <Route path="/" element={<LoginForm setIsAuthenticated={setIsAuthenticated} />} />
+                    <Route path="/login" element={<LoginForm setIsAuthenticated={setIsAuthenticated} />} />
+                    <Route path="/productos" element={<Productos addToCart={addToCart} />} />
                     <Route path="/register" element={<RegisterForm />} />
-                    <Route
-                        path="/tienda"
-                        element={<Tienda addToCart={addToCart} />} // Pasar addToCart como prop
-                    />
+                    <Route path="/tienda" element={<Tienda addToCart={addToCart} />} /> {/* Pasar addToCart */}
                     <Route
                         path="/carrito"
                         element={
