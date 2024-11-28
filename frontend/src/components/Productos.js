@@ -1,121 +1,160 @@
-import React from 'react';
-import useProductos from '../hooks/useProductos';
+import React, { useState } from "react";
+import axios from "axios";
 
-const Productos = ({ addToCart }) => {
-    const {
-        productos,
-        producto,
-        setProducto,
-        guardar,
-        eliminar,
-        cargarProductoParaEditar,
-        productoIdParaEditar,
-    } = useProductos();
+const Productos = () => {
+  const [producto, setProducto] = useState({
+    nombre: "",
+    codigo: "",
+    inventario: 0,
+    marca: "",
+    valor: 0,
+    estado: 1,
+    imagen: null,
+  });
 
-    return (
-        <div className="container mt-5">
-            <h1>Productos</h1>
-            <table className="table table-striped">
-                <thead className="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Código</th>
-                        <th>Inventario</th>
-                        <th>Marca</th>
-                        <th>Valor</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {productos.map((prod) => (
-                        <tr key={prod.id}>
-                            <td>{prod.id}</td>
-                            <td>{prod.nombre}</td>
-                            <td>{prod.codigo}</td>
-                            <td>{prod.inventario}</td>
-                            <td>{prod.marca}</td>
-                            <td>{prod.valor}</td>
-                            <td>
-                                <button
-                                    className="btn btn-primary btn-sm me-2"
-                                    onClick={() => cargarProductoParaEditar(prod)}
-                                >
-                                    Editar
-                                </button>
-                                <button
-                                    className="btn btn-danger btn-sm me-2"
-                                    onClick={() => eliminar(prod.id)}
-                                >
-                                    Eliminar
-                                </button>
-                                <button
-                                    className="btn btn-success btn-sm"
-                                    onClick={() => {
-                                        console.log('Añadiendo producto al carrito:', prod); // Verificación
-                                        addToCart(prod); // CORREGIDO: Uso de la función pasada como prop
-                                    }}
-                                >
-                                    Añadir al carrito
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProducto({
+      ...producto,
+      [name]: value,
+    });
+  };
 
-            {/* Formulario */}
-            <div className="card p-4">
-                <h5 className="card-title">
-                    {productoIdParaEditar ? 'Actualizar Producto' : 'Añadir Producto'}
-                </h5>
+  const handleFileChange = (e) => {
+    setProducto({
+      ...producto,
+      imagen: e.target.files[0], // Capturar la imagen seleccionada
+    });
+  };
 
-                <input
-                    type="text"
-                    className="form-control mb-3"
-                    placeholder="Nombre"
-                    value={producto.nombre}
-                    onChange={(e) => setProducto({ ...producto, nombre: e.target.value })}
-                />
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-                <input
-                    type="text"
-                    className="form-control mb-3"
-                    placeholder="Codigo"
-                    value={producto.codigo}
-                    onChange={(e) => setProducto({ ...producto, codigo: e.target.value })}
-                />
+    const formData = new FormData();
+    for (const key in producto) {
+      if (producto[key] !== null) { // Solo agregar campos con valores
+        formData.append(key, producto[key]);
+      }
+    }
 
-                <input
-                    type="text"
-                    className="form-control mb-3"
-                    placeholder="Inventario"
-                    value={producto.inventario}
-                    onChange={(e) => setProducto({ ...producto, inventario: e.target.value })}
-                />
+    try {
+      const response = await axios.post("http://localhost:5000/productos", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Indicar que se están enviando archivos
+        },
+      });
+      console.log("Producto guardado:", response.data);
+      alert("Producto agregado con éxito");
+      // Limpiar el formulario
+      setProducto({
+        nombre: "",
+        codigo: "",
+        inventario: 0,
+        marca: "",
+        valor: 0,
+        estado: 1,
+        imagen: null,
+      });
+    } catch (error) {
+      console.error("Error al guardar el producto:", error);
+      alert("Ocurrió un error al guardar el producto. Por favor, intenta nuevamente.");
+    }
+  };
 
-                <input
-                    type="text"
-                    className="form-control mb-3"
-                    placeholder="Marca"
-                    value={producto.marca}
-                    onChange={(e) => setProducto({ ...producto, marca: e.target.value })}
-                />
-
-                <input
-                    type="text"
-                    className="form-control mb-3"
-                    placeholder="Valor"
-                    value={producto.valor}
-                    onChange={(e) => setProducto({ ...producto, valor: e.target.value })}
-                />
-
-                <button className="btn btn-success" onClick={guardar}>
-                    {productoIdParaEditar ? 'Actualizar Producto' : 'Añadir Producto'}
-                </button>
-            </div>
+  return (
+    <div className="container mt-4">
+      <h2 className="mb-4">Agregar Producto</h2>
+      <form onSubmit={handleSubmit} className="row g-3">
+        <div className="col-md-6">
+          <label htmlFor="nombre" className="form-label">Nombre:</label>
+          <input
+            type="text"
+            className="form-control"
+            id="nombre"
+            name="nombre"
+            value={producto.nombre}
+            onChange={handleChange}
+            required
+          />
         </div>
-    );
+        <div className="col-md-6">
+          <label htmlFor="codigo" className="form-label">Código:</label>
+          <input
+            type="text"
+            className="form-control"
+            id="codigo"
+            name="codigo"
+            value={producto.codigo}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-md-4">
+          <label htmlFor="inventario" className="form-label">Inventario:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="inventario"
+            name="inventario"
+            value={producto.inventario}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-md-4">
+          <label htmlFor="marca" className="form-label">Marca:</label>
+          <input
+            type="text"
+            className="form-control"
+            id="marca"
+            name="marca"
+            value={producto.marca}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-md-4">
+          <label htmlFor="valor" className="form-label">Valor:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="valor"
+            name="valor"
+            value={producto.valor}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="estado" className="form-label">Estado:</label>
+          <select
+            id="estado"
+            className="form-select"
+            name="estado"
+            value={producto.estado}
+            onChange={handleChange}
+          >
+            <option value={1}>Activo</option>
+            <option value={0}>Inactivo</option>
+          </select>
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="imagen" className="form-label">Imagen:</label>
+          <input
+            type="file"
+            className="form-control"
+            id="imagen"
+            name="imagen"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </div>
+        <div className="col-12">
+          <button type="submit" className="btn btn-primary">Guardar Producto</button>
+        </div>
+      </form>
+    </div>
+  );
 };
 
 export default Productos;

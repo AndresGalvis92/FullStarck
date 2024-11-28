@@ -5,7 +5,7 @@ Este es un proyecto FullStack desarrollado con React, Node.js, Express y MySQL. 
 ## Tabla de Contenidos
 - [Descripción](Proyecto de clase Fullstack donde estamos desarrollando una prototipo de una tienda online )
 - [Tecnologías Utilizadas](React,Node,express,sql,boostrap)
-- [Autor](Andres Galvis)
+- [Autor](Andres Galvis, Jhon Galeano, cristian villaneda)
 
 ## Descripción
 Este proyecto permite gestionar un inventario de productos, donde cada producto cuenta con los siguientes atributos: nombre, código, inventario, marca, valor y estado. Los usuarios pueden realizar operaciones CRUD en los productos, y los productos eliminados no se eliminan físicamente sino que su estado se actualiza.

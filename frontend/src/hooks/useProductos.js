@@ -1,10 +1,9 @@
-// src/hooks/useProductos.js
 import { useState, useEffect } from 'react';
 import { getProductos, addProducto, updateProducto, deleteProducto } from '../services/productosService';
 
 const useProductos = () => {
   const [productos, setProductos] = useState([]);
-  const [producto, setProducto] = useState({ nombre: '', codigo: '', inventario: '', marca: '', valor: '' });
+  const [producto, setProducto] = useState({ nombre: '', codigo: '', inventario: '', marca: '', valor: '', imagen: null });
   const [productoIdParaEditar, setProductoIdParaEditar] = useState(null);
 
   // Cargar productos al iniciar
@@ -14,8 +13,12 @@ const useProductos = () => {
 
   // Obtener productos
   const fetchProductos = async () => {
-    const { data } = await getProductos();
-    setProductos(data);
+    try {
+      const { data } = await getProductos();
+      setProductos(data); // Asegura que los productos incluyen la ruta de la imagen
+    } catch (error) {
+      console.error('Error al obtener productos:', error);
+    }
   };
 
   // Guardar producto (crear o actualizar)
@@ -44,7 +47,7 @@ const useProductos = () => {
 
   // Resetear formulario
   const resetProducto = () => {
-    setProducto({ nombre: '', codigo: '', inventario: '', marca: '', valor: '' });
+    setProducto({ nombre: '', codigo: '', inventario: '', marca: '', valor: '', imagen: null });
   };
 
   return {

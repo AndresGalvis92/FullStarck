@@ -46,7 +46,7 @@ const Tienda = ({ addToCart }) => {
                         <div className="col-md-4" key={prod.id}>
                             <div className="card">
                                 <img
-                                    src="https://via.placeholder.com/300"
+                                    src={prod.imagen || 'https://via.placeholder.com/300'} // Mostrar imagen del producto o un placeholder si no existe
                                     className="card-img-top"
                                     alt={prod.nombre}
                                 />
