@@ -33,7 +33,7 @@ const Tienda = ({ addToCart }) => {
                     <h1>¡Bienvenido a Mi Tienda Virtual!</h1>
                     <p>Descubre nuestros productos al mejor precio.</p>
                     <Link to="/productos" className="btn btn-primary btn-lg">
-                        Explorar Productos
+                        Agregar Productos
                     </Link>
                 </div>
             </div>
