@@ -76,7 +76,7 @@ const Tienda = ({ addToCart }) => {
                                         className="btn btn-success"
                                         onClick={() => {
                                             const cantidadSeleccionada = cantidades[prod.id] || 1;
-                                            addToCart(prod, cantidadSeleccionada); // Llamada a la función con producto y cantidad
+                                            addToCart(prod, cantidadSeleccionada); //llama a la función con producto y cantidad
                                         }}
                                     >
                                         Añadir al carrito
